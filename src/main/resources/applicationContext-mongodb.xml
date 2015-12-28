@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"
+       default-lazy-init="true">
+
+    <description>mongodb配置</description>
+
+    <mongo:mongo-client id="mongo" replica-set="${mongodb.replicaSet}">
+        <mongo:client-options connect-timeout="5000"
+                              connections-per-host="50"
+                              socket-keep-alive="true"
+                              socket-timeout="3000"
+                              threads-allowed-to-block-for-connection-multiplier="5"/>
+    </mongo:mongo-client>
+
+    <!--<mongo:mongo id="mongo" replica-set="${mongodb.replicaSet}" write-concern="SAFE">-->
+        <!--<mongo:options connections-per-host="20"-->
+                       <!--auto-connect-retry="true"-->
+                       <!--connect-timeout="5000"-->
+                       <!--max-auto-connect-retry-time="3"-->
+                       <!--socket-keep-alive="true"-->
+                       <!--socket-timeout="3000"-->
+                       <!--slave-ok="false"-->
+                       <!--write-number="1"-->
+                       <!--write-fsync="false"-->
+                       <!--threads-allowed-to-block-for-connection-multiplier="5"-->
+                       <!--write-timeout="3000"/>-->
+    <!--</mongo:mongo>-->
+
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongo" ref="mongo"/>
+        <constructor-arg name="databaseName" value="test"/>
+    </bean>
+</beans>
